@@ -1,0 +1,61 @@
+{
+  "name": "@adeyanjufuhad/repospec",
+  "version": "0.1.0",
+  "description": "Local, token-budgeted repository context for AI coding assistants",
+  "type": "module",
+  "bin": {
+    "repospec": "./dist/cli.js"
+  },
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "workspaces": [
+    "ui"
+  ],
+  "scripts": {
+    "build": "tsup src/cli.ts src/index.ts --format esm --dts --clean",
+    "dev": "npm run dev --workspace ui",
+    "build:ui": "npm run build --workspace ui",
+    "start": "npm run start --workspace ui",
+    "typecheck": "tsc --noEmit && npm run typecheck --workspace ui",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prepack": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adeyanjufuhad/RepoSpec.git"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "@mrleebo/prisma-ast": "^0.16.0",
+    "chokidar": "^5.0.0",
+    "commander": "^15.0.0",
+    "fast-glob": "^3.3.3",
+    "gpt-tokenizer": "^4.0.0",
+    "picomatch": "^4.0.7",
+    "ts-morph": "^28.0.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "@types/picomatch": "^4.0.3",
+    "tsup": "^8.5.1",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vitest": "^5.0.4"
+  }
+}
