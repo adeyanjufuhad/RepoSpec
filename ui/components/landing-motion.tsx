@@ -1,6 +1,6 @@
 'use client';
 import { createContext, useContext, useRef, useState } from 'react';
-import { MotionConfig, motion, useReducedMotion, useScroll, useSpring, useTransform } from 'framer-motion';
+import { MotionConfig, motion, useReducedMotion, useScroll, useTransform } from 'framer-motion';
 import { ArrowRightIcon, GitHubLogoIcon, PauseIcon, PlayIcon, CodeIcon, FileTextIcon } from '@radix-ui/react-icons';
 
 const MotionContext = createContext({ paused: false, toggle: () => {} });
@@ -16,12 +16,6 @@ export function LandingMotion({ children }: { children: React.ReactNode }) {
 export function MotionControl() {
   const { paused, toggle, reduced } = useLandingMotion();
   return <button className="landing-motion-control" onClick={toggle} aria-pressed={paused} aria-label={paused ? 'Resume page motion' : 'Pause page motion'} title={reduced ? 'Reduced motion follows your device settings' : paused ? 'Resume page motion' : 'Pause page motion'}>{paused ? <PlayIcon/> : <PauseIcon/>}<span>{paused ? 'Play' : 'Pause'} motion</span></button>;
-}
-export function ScrollProgress() {
-  const { scrollYProgress } = useScroll();
-  const { stopped } = useLandingMotion();
-  const scaleX = useSpring(scrollYProgress, { stiffness: 180, damping: 30 });
-  return <motion.div className="page-progress" aria-hidden="true" style={{ scaleX: stopped ? scrollYProgress : scaleX }}/>;
 }
 export function StackMarquee() {
   return <section className="stack-strip moving-stack" aria-label="Supported source technologies"><div className="landing-container"><span>BUILT AROUND<br/>YOUR ACTUAL STACK</span><div className="stack-window"><div className="stack-track">{[false, true].map(duplicate => <div className="stack-group" key={String(duplicate)} aria-hidden={duplicate || undefined}><b><span className="stack-monogram">TS</span>TypeScript</b><b><span className="stack-next">N</span>Next.js</b><b>◭ Prisma</b><b>Drizzle<span className="stack-drizzle">///</span></b><b>zod<span className="stack-zod">{'{ }'}</span></b></div>)}</div></div></div></section>;

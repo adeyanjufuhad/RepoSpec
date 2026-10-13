@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { ArrowRightIcon, GitHubLogoIcon, CheckIcon, CodeIcon, LockClosedIcon, DownloadIcon, LayersIcon } from '@radix-ui/react-icons';
 import Brand from '@/components/brand';
-import { FluidScene, Reveal, LandingMotion, MotionControl, ScrollProgress, StackMarquee } from '@/components/landing-motion';
+import { FluidScene, Reveal, LandingMotion, MotionControl, StackMarquee } from '@/components/landing-motion';
 import LandingDemo from '@/components/landing-demo';
 import { PipelineStory, ExportStory, UseCases } from '@/components/landing-story';
 import { demoSnapshot } from '@/lib/demo';
@@ -18,7 +18,7 @@ const faqs = [
 export default function HomePage() {
   const demo = compileSnapshot(demoSnapshot, { budget: 2500, disabledFiles: [], disabledSections: [] });
   return <LandingMotion>
-    <header className="landing-header"><ScrollProgress/><div className="landing-nav"><Brand/><nav className="landing-links" aria-label="Main navigation"><a href="#how-it-works">How it works</a><a href="#playground">The playground</a><a href="#questions">FAQs</a></nav><div className="landing-nav-actions"><MotionControl/><a href="/app" className="landing-nav-cta">Open workspace<ArrowRightIcon aria-hidden="true"/></a></div></div></header>
+    <header className="landing-header"><div className="landing-nav"><Brand/><nav className="landing-links" aria-label="Main navigation"><a href="#how-it-works">How it works</a><a href="#playground">The playground</a><a href="#questions">FAQs</a></nav><div className="landing-nav-actions"><MotionControl/><a href="/app" className="landing-nav-cta">Open workspace<ArrowRightIcon aria-hidden="true"/></a></div></div></header>
     <main id="main">
       <section className="landing-hero landing-container"><div className="hero-copy"><Reveal><div className="eyebrow"><span/>A LITTLE CONTEXT GOES A LONG WAY</div><h1>Your code.<br/>Your context.<br/><span>Less guesswork.</span></h1><p className="hero-description">Give your AI assistant a clear picture of your codebase. Turn a GitHub repo into focused context—schemas, routes, and types included.</p><div className="hero-actions"><a href="/app" className="landing-primary"><GitHubLogoIcon aria-hidden="true"/>Analyze a GitHub repo<ArrowRightIcon aria-hidden="true"/></a><a href="#playground" className="landing-text-link">Take it for a spin<span>↘</span></a></div><div className="hero-footnote"><CheckIcon aria-hidden="true"/>Public repos without sign-in<span/>Private repos through GitHub</div></Reveal></div><FluidScene tokens={demo.tokens}/><div className="hero-bottom-label"><span>FROM REPOSITORY TO REFERENCE</span><span>SCROLL TO EXPLORE ↓</span></div></section>
       <StackMarquee/>

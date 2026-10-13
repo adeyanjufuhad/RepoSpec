@@ -120,7 +120,6 @@ button:disabled { cursor: wait; opacity: .6; }
 .landing-nav-actions { display: flex; align-items: center; gap: 15px; }
 .landing-motion-control { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 44px; color: #63788a; font-size: 10px; white-space: nowrap; }
 .landing-motion-control svg { width: 14px; height: 14px; }
-.page-progress { position: absolute; top: 0; left: 0; right: 0; height: 2px; background: #0096c7; transform-origin: left; }
 .scene-orbit { position: absolute; width: 90%; height: 90%; border: 1px dashed #0077b622; border-radius: 50%; left: 7%; top: 3%; z-index: -1; animation: scene-orbit 45s linear infinite; }
 .scene-orbit > span { position: absolute; top: 15%; left: 0; background: #f0fbfe; border: 1px solid #ade8f4; padding: 7px 10px; border-radius: 5px; font: 8px var(--font-geist-mono), monospace; color: #0077b6; transform: rotate(-30deg); }
 .orbit-two { width: 76%; height: 76%; top: 10%; left: 12%; animation-duration: 55s; animation-direction: reverse; }
