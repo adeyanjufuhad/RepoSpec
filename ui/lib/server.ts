@@ -17,6 +17,7 @@ export const requestSchema = z.object({
 }).strict();
 export type DashboardOptions = z.infer<typeof requestSchema>;
 export function authorize(request: Request) {
+  if (process.env.REPOSPEC_LOCAL_ENABLED !== 'true') throw new Error('Local filesystem access is disabled on this deployment.');
   const host = request.headers.get('host');
   if (!host || !/^(localhost|127\.0\.0\.1|\[::1\])(?::\d+)?$/.test(host)) throw new Error('Localhost access is required.');
   const origin = request.headers.get('origin');
