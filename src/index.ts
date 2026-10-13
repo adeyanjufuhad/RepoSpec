@@ -1,7 +1,8 @@
-export * from './model.js';
-export * from './config.js';
-export * from './engine.js';
-export * from './compactor.js';
-export * from './extractors/schema.js';
-export * from './extractors/routes.js';
-export * from './extractors/types.js';
+export * from './model';
+export * from './config';
+export * from './engine';
+export * from './compactor';
+export * from './extractors/schema';
+export * from './extractors/routes';
+export * from './extractors/types';
+

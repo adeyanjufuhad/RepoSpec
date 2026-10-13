@@ -15,3 +15,4 @@ export interface SourceEntry {
   path: string; hash: string; model: IntermediateModel; warnings: string[];
 }
 export const emptyModel = (): IntermediateModel => ({ database: [], routes: [], types: [], rules: [], meta: {} });
+

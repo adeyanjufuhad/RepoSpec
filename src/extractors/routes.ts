@@ -1,7 +1,7 @@
 import { Node, SyntaxKind, type SourceFile } from 'ts-morph';
-import type { Route } from '../model.js';
-import { slash } from '../config.js';
-import { compact } from './ast.js';
+import type { Route } from '../model';
+import { slash } from '../config';
+import { compact } from './ast';
 
 const METHODS = new Set(['GET', 'POST', 'PUT', 'PATCH', 'DELETE']);
 export function extractRoutes(source: SourceFile, filename: string): Route[] {
@@ -44,3 +44,4 @@ export function extractRoutes(source: SourceFile, filename: string): Route[] {
   }
   return result.sort((a, b) => a.method.localeCompare(b.method));
 }
+

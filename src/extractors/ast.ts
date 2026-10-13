@@ -1,7 +1,7 @@
 import { Node, Project, ScriptKind, ts } from 'ts-morph';
 
 export function parseSource(filename: string, content: string) {
-  const project = new Project({ useInMemoryFileSystem: true, skipAddingFilesFromTsConfig: true });
+  const project = new Project({ useInMemoryFileSystem: true, skipAddingFilesFromTsConfig: true, compilerOptions: { noLib: true, noResolve: true } });
   const source = project.createSourceFile(filename, content, { scriptKind: filename.endsWith('.tsx') ? ScriptKind.TSX : ScriptKind.TS });
   const diagnostics = project.getProgram().compilerObject.getSyntacticDiagnostics(source.compilerNode);
   if (diagnostics.length) throw new Error(ts.flattenDiagnosticMessageText(diagnostics[0].messageText, ' '));
@@ -18,3 +18,4 @@ export function unwrap(node: Node): Node {
   if (Node.isAsExpression(node) || Node.isSatisfiesExpression(node) || Node.isParenthesizedExpression(node)) return unwrap(node.getExpression());
   return node;
 }
+

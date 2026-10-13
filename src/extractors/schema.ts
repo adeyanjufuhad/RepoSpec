@@ -1,7 +1,7 @@
 import { getSchema } from '@mrleebo/prisma-ast';
 import { Node, SyntaxKind, type SourceFile } from 'ts-morph';
-import type { Column, Table } from '../model.js';
-import { compact, unwrap } from './ast.js';
+import type { Column, Table } from '../model';
+import { compact, unwrap } from './ast';
 
 export function extractPrisma(content: string): Table[] {
   const schema = getSchema(content);
@@ -140,3 +140,4 @@ export function extractTsSchemas(source: SourceFile): { tables: Table[]; warning
   }
   return { tables, warnings };
 }
+

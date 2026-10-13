@@ -1,0 +1,7 @@
+{
+  "tokenBudget": 2500,
+  "output": [".cursorrules", ".ai-context.md"],
+  "include": ["src/**/*.ts", "ui/app/api/**/*.ts"],
+  "exclude": ["**/*.test.ts", "**/node_modules/**"],
+  "rulesFile": ".repospec/rules.md"
+}

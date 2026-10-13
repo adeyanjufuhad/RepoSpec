@@ -1,6 +1,6 @@
 import { Node, type SourceFile } from 'ts-morph';
-import { compact } from './ast.js';
-import type { CoreType } from '../model.js';
+import { compact } from './ast';
+import type { CoreType } from '../model';
 
 export function extractTypes(source: SourceFile): CoreType[] {
   const result: CoreType[] = [];
@@ -15,3 +15,4 @@ export function extractTypes(source: SourceFile): CoreType[] {
   }
   return result.sort((a, b) => a.name.localeCompare(b.name));
 }
+

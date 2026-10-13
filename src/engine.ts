@@ -1,21 +1,21 @@
 import { createHash, randomUUID } from 'node:crypto';
 import { readFile, mkdir, writeFile, rename, unlink, stat } from 'node:fs/promises';
 import path from 'node:path';
-import fg from 'fast-glob';
-import { ALWAYS_IGNORE, isSecret, safePath, slash, type Config } from './config.js';
-import { emptyModel, type SourceEntry, type Section } from './model.js';
-import { parseSource } from './extractors/ast.js';
-import { extractPrisma, extractTsSchemas } from './extractors/schema.js';
-import { extractTypes } from './extractors/types.js';
-import { extractRoutes } from './extractors/routes.js';
-import { compactModel, countTokens, sectionLines } from './compactor.js';
+import { glob } from 'tinyglobby';
+import { ALWAYS_IGNORE, isSecret, safePath, slash, type Config } from './config';
+import { emptyModel, type SourceEntry, type Section } from './model';
+import { parseSource } from './extractors/ast';
+import { extractPrisma, extractTsSchemas } from './extractors/schema';
+import { extractTypes } from './extractors/types';
+import { extractRoutes } from './extractors/routes';
+import { compactModel, countTokens, sectionLines } from './compactor';
 
 export interface ScanOptions { disabledFiles?: string[]; disabledSections?: Section[]; budget?: number }
 export class ScanEngine {
   private cache = new Map<string, SourceEntry>();
   async scan(root: string, config: Config, options: ScanOptions = {}) {
     const started = performance.now();
-    const matches = await fg(config.include, { cwd: root, ignore: [...ALWAYS_IGNORE, ...config.exclude, ...config.output], onlyFiles: true, followSymbolicLinks: false, dot: true });
+    const matches = await glob(config.include, { cwd: root, ignore: [...ALWAYS_IGNORE, ...config.exclude, ...config.output], onlyFiles: true, followSymbolicLinks: false, dot: true });
     const paths = matches.map(slash).filter(p => !isSecret(p) && /\.(prisma|tsx?|mts|cts)$/.test(p)).sort();
     const model = emptyModel();
     const files: { path: string; tokens: number; sections: Section[]; included: boolean; cached: boolean; warnings: string[] }[] = [];
@@ -110,3 +110,4 @@ export async function syncOutputs(root: string, config: Config, result: ScanResu
   await atomicWrite(root, '.repospec/state.json', JSON.stringify({ updated: result.updated, tokens: result.tokens, output: config.output, fingerprint: createHash('sha256').update(result.markdown).digest('hex') }, null, 2) + '\n');
   return { written, previous };
 }
+

@@ -50,7 +50,7 @@ export async function detectWorkspace(start: string): Promise<string> {
   let found = false;
   while (true) {
     for (const filename of ['.repospec.json', 'pnpm-workspace.yaml']) {
-      try { await lstat(path.join(dir, filename)); return dir; } catch { /* search upwards */ }
+      try { await lstat(path.join(/* turbopackIgnore: true */ dir, filename)); return dir; } catch { /* search upwards */ }
     }
     try {
       const pkg = JSON.parse(await readFile(path.join(dir, 'package.json'), 'utf8'));
@@ -66,7 +66,7 @@ export async function loadConfig(cwd: string, configPath?: string, budget?: numb
   let raw: unknown;
   let notice: string | undefined;
   const configFile = path.resolve(root, configPath ?? '.repospec.json');
-  try { raw = JSON.parse(await readFile(configFile, 'utf8')); }
+  try { raw = JSON.parse(await readFile(/* turbopackIgnore: true */ configFile, 'utf8')); }
   catch (error) {
     if ((error as NodeJS.ErrnoException).code !== 'ENOENT' || configPath) throw new Error(`Cannot read config ${configFile}: ${(error as Error).message}`);
     try { raw = JSON.parse(await readFile(path.join(root, 'package.json'), 'utf8')).repospec; } catch { /* defaults */ }
@@ -81,3 +81,4 @@ export async function loadConfig(cwd: string, configPath?: string, budget?: numb
   await safePath(root, config.rulesFile);
   return { root, config, configFile, notice };
 }
+

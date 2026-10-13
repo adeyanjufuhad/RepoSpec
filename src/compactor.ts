@@ -1,5 +1,5 @@
 import { encode } from 'gpt-tokenizer';
-import type { IntermediateModel, Section, Table } from './model.js';
+import type { IntermediateModel, Section, Table } from './model';
 
 export const countTokens = (text: string) => encode(text, { allowedSpecial: new Set() }).length;
 const ORDER: Section[] = ['database', 'routes', 'types', 'rules'];
@@ -51,3 +51,4 @@ export function compactModel(input: IntermediateModel, budget: number, xmlTags =
   const sectionTokens = Object.fromEntries(ORDER.map(s => [s, countTokens(sections[s].join('\n'))])) as Record<Section, number>;
   return { markdown, tokens, originalTokens: countTokens(original), pruned: original !== markdown, model, sectionTokens };
 }
+
