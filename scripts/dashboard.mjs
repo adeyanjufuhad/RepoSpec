@@ -1,0 +1,11 @@
+import { spawn } from 'node:child_process';
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
+const mode = process.argv[2] ?? 'dev';
+if (!['dev', 'build', 'start'].includes(mode)) throw new Error('Expected dev, build, or start.');
+const args = [require.resolve('next/dist/bin/next'), mode, ...(mode === 'build' ? [] : ['--hostname', '127.0.0.1']), ...process.argv.slice(3)];
+const child = spawn(process.execPath, args, { stdio: 'inherit', env: { ...process.env, NEXT_TELEMETRY_DISABLED: '1' }, windowsHide: true });
+child.on('error', error => { console.error(error.message); process.exitCode = 1; });
+child.on('exit', code => { process.exitCode = code ?? 1; });
+process.on('SIGINT', () => child.kill('SIGINT'));
+process.on('SIGTERM', () => child.kill('SIGTERM'));

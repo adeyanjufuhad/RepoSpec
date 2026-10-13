@@ -15,6 +15,11 @@
 * { box-sizing: border-box; }
 body { margin: 0; font-family: var(--font-geist-sans), sans-serif; -webkit-font-smoothing: antialiased; }
 html { color-scheme: light; scroll-behavior: smooth; }
+h1, h2 { text-wrap: balance; scroll-margin-top: 1rem; }
+.text-slate-400 { color: #64748b; }
+.font-mono { font-variant-numeric: tabular-nums; }
+.source-row { content-visibility: auto; contain-intrinsic-size: auto 68px; }
+.search-control:focus-within { outline: 3px solid #0096c7; outline-offset: 3px; }
 button, a, input, textarea { -webkit-tap-highlight-color: #caf0f8; touch-action: manipulation; }
 button { cursor: pointer; }
 button:disabled { cursor: wait; opacity: .6; }
@@ -44,11 +49,11 @@ button:disabled { cursor: wait; opacity: .6; }
 .toggle:checked::after { transform: translateX(12px); }
 .preview-tab { min-height: 40px; display: flex; align-items: center; padding: 0 10px; border-bottom: 2px solid transparent; font-size: 10px; color: #64748b; }
 .preview-tab-active { border-color: #0077b6; color: #0077b6; font-weight: 600; }
-.preview-code { font-family: var(--font-geist-mono), monospace; font-size: 10px; line-height: 1.95; }
+.preview-code { font-family: var(--font-geist-mono), monospace; font-size: 11px; line-height: 1.95; }
 .field-label { display: block; margin-bottom: 8px; font-size: 12px; font-weight: 500; }
 .text-input { border: 1px solid #cbd5e1; border-radius: 7px; background: white; padding: 10px 12px; font-size: 12px; }
 .skeleton { border-radius: 12px; border: 1px solid #e2e8f0; background: #edf2f7; animation: breathe 1.5s ease-in-out infinite; }
 @keyframes breathe { 50% { opacity: .5; } }
-@media (max-width: 1023px) { .sidebar { transform: translateX(-100%); } .sidebar-open { transform: translateX(0); top: 64px; box-shadow: 8px 0 20px #03045e10; } .app-content { margin-left: 0; } }
+@media (max-width: 1023px) { .sidebar { transform: translateX(-100%); visibility: hidden; } .sidebar-open { transform: translateX(0); visibility: visible; top: 64px; box-shadow: 8px 0 20px #03045e10; } .app-content { margin-left: 0; } }
 @media (max-width: 767px) { .primary-button, .secondary-button, .icon-button, .nav-link, .preview-tab { min-height: 44px; } input:not([type=checkbox]):not([type=range]), textarea { font-size: 16px !important; } .toggle { width: 36px; height: 22px; } .toggle::after { width: 16px; height: 16px; } .toggle:checked::after { transform: translateX(14px); } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
