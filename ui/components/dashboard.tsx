@@ -1,4 +1,5 @@
 'use client';
+import { BrandMark } from './brand';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { ArrowRightIcon, CheckIcon, ChevronDownIcon, CodeIcon, CopyIcon, CubeIcon, DashboardIcon, FileTextIcon, GearIcon, CommitIcon, GitHubLogoIcon, LightningBoltIcon, MagnifyingGlassIcon, MixerHorizontalIcon, ReloadIcon, TargetIcon, LockClosedIcon, Cross2Icon } from '@radix-ui/react-icons';
@@ -95,7 +96,7 @@ export default function Dashboard({ token }: { token: string }) {
 
   return <div className="min-h-dvh bg-[#f7f9fc] text-slate-800">
     <aside className={`sidebar ${mobileNav ? 'sidebar-open' : ''}`}>
-      <a href="/" className="flex items-center gap-2.5 px-6 py-7 text-lg font-semibold tracking-tight text-[#03045e]"><span className="brand-mark"><CodeIcon aria-hidden="true" width={21} height={21}/></span>RepoSpec<span className="ml-auto rounded border border-slate-200 px-1.5 py-0.5 font-mono text-[9px] font-normal tracking-normal text-slate-400">LOCAL</span></a>
+      <a href="/" className="flex items-center gap-2.5 px-6 py-7 text-lg font-semibold tracking-tight text-[#03045e]"><BrandMark/>RepoSpec<span className="ml-auto rounded border border-slate-200 px-1.5 py-0.5 font-mono text-[9px] font-normal tracking-normal text-slate-400">LOCAL</span></a>
       <div className="mx-4 mb-8 flex items-center gap-2.5 rounded-lg border border-slate-200 bg-white px-3 py-3"><span className="flex size-8 items-center justify-center rounded-md bg-[#e8f5fa] text-[#0077b6]"><CubeIcon aria-hidden="true"/></span><div className="min-w-0"><div className="truncate text-xs font-semibold">{data?.project ?? 'Your workspace'}</div><div className="mt-0.5 text-[10px] text-slate-500">Local repository</div></div><ChevronDownIcon aria-hidden="true" className="ml-auto text-slate-400"/></div>
       <p className="px-6 text-[10px] font-semibold tracking-[.12em] text-slate-400">WORKSPACE</p>
       <nav className="mt-3 space-y-1 px-3" aria-label="Workspace">{nav.map(({ id, label, icon: Icon }) => <a href={`?view=${id}`} key={id} aria-current={view === id ? 'page' : undefined} onClick={e => { if (!e.ctrlKey && !e.metaKey && !e.shiftKey && e.button === 0) { e.preventDefault(); navigate(id); } }} className={`nav-link ${view === id ? 'nav-active' : ''}`}><Icon aria-hidden="true" width={17} height={17}/>{label}{id === 'sources' && data ? <span className="ml-auto text-[10px]">{data.files.length}</span> : null}</a>)}</nav>

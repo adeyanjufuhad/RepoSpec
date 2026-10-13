@@ -53,3 +53,11 @@ preferences disable automatic cycling and decorative movement. Walkthrough
 content is explicitly illustrative; the playground and downloadable example
 use the actual parser against a labeled fixture. Do not confuse export filenames
 with automatic integrations or promise that a snapshot stays up to date.
+
+## Logo
+
+The RepoSpec monogram is an original SVG with three separated rounded forms,
+inspired by the user's R reference. Preserve visible negative space between the
+upper bowl and the right stroke at small sizes. Use the shared BrandMark in the
+public site and local dashboard, and the matching App Router SVG favicon.
+Source: ui/public/brand/repospec-mark.svg. No reference watermark or image is embedded.

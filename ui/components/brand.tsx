@@ -1,4 +1,6 @@
-import { CodeIcon } from '@radix-ui/react-icons';
+export function BrandMark() {
+  return <span className="brand-mark"><img src="/brand/repospec-mark.svg" className="brand-monogram" alt="" aria-hidden="true" width={30} height={30}/></span>;
+}
 export default function Brand({ light = false }: { light?: boolean }) {
-  return <a href="/" translate="no" className={`brand-lockup ${light ? 'brand-light' : ''}`} aria-label="RepoSpec home"><span className="brand-mark"><CodeIcon aria-hidden="true" width={22} height={22}/></span><span>RepoSpec<span className="brand-period">.</span></span></a>;
+  return <a href="/" translate="no" className={`brand-lockup ${light ? 'brand-light' : ''}`} aria-label="RepoSpec home"><BrandMark/><span>RepoSpec<span className="brand-period">.</span></span></a>;
 }

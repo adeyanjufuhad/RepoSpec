@@ -30,6 +30,7 @@ button:disabled { cursor: wait; opacity: .6; }
 .sidebar { position: fixed; inset: 0 auto 0 0; width: 230px; display: flex; flex-direction: column; border-right: 1px solid #e2e8f0; background: #fcfdff; z-index: 20; }
 .app-content { margin-left: 230px; }
 .brand-mark { display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 9px; background: #03045e; color: #90e0ef; box-shadow: inset 0 1px 0 #ffffff20; }
+.brand-monogram { display: block; filter: brightness(0) invert(1); }
 .nav-link { display: flex; align-items: center; gap: 11px; padding: 11px 13px; border-radius: 7px; font-size: 12px; color: #64748b; transition: color .15s, background-color .15s; }
 .nav-link:hover { background: #f0f5fa; color: #023e8a; }
 .nav-active { background: #e8f3fa; color: #0077b6; font-weight: 600; }
