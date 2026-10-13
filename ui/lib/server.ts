@@ -2,7 +2,7 @@ import 'server-only';
 import { randomBytes, timingSafeEqual } from 'node:crypto';
 import path from 'node:path';
 import { z } from 'zod';
-import { configSchema, loadConfig, safePath, type Config } from '../../src/config';
+import { configSchema, loadConfig, safePath, validateConfigPaths, type Config } from '../../src/config';
 import { atomicWrite, readOptional, ScanEngine, syncOutputs } from '../../src/engine';
 
 const globalServer = globalThis as unknown as { repospecServer?: { token: string; engine: ScanEngine; queue: Promise<unknown> } };
@@ -44,10 +44,7 @@ async function configuration(options: DashboardOptions) {
     ...(options.disabledSections ? { disabledSections: options.disabledSections } : {}),
     ...(options.output ? { output: options.output } : {}),
   };
-  for (const output of next.output) {
-    await safePath(root, output);
-    if (/\.(ts|tsx|js|jsx|json|prisma)$/i.test(output) || output === next.rulesFile || output.startsWith('.repospec/')) throw new Error('Choose a Markdown or rules output file, not source or configuration.');
-  }
+  await validateConfigPaths(root, next);
   return { root, config: next, notice };
 }
 export async function dashboardScan(options: DashboardOptions = {}) {

@@ -2,6 +2,9 @@ import { expect, it } from 'vitest';
 import { emptyModel } from '../src/model.js';
 import { compactModel, countTokens, serialize } from '../src/compactor.js';
 const model = { ...emptyModel(), database: [{ name: 'users', columns: [{ name: 'id', type: 'uuid', constraints: ['PK'] }] }], routes: [{ method: 'GET' as const, path: '/api/users' }], types: [{ name: 'User', signature: 'interface User { id: string }' }], rules: ['Use the shared database client.'] };
+it('treats tokenizer control markers in source as plain text', () => {
+  expect(countTokens('<|endoftext|>')).toBeGreaterThan(1);
+});
 it('serializes a deterministic golden artifact', () => {
   expect(serialize(model)).toBe('# RepoSpec context\n\n## Database\nTable users (id: uuid [PK])\n\n## API routes\nGET /api/users\n\n## Core types\ninterface User { id: string }\n\n## Architecture rules\n- Use the shared database client.\n');
 });

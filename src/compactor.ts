@@ -1,7 +1,7 @@
 import { encode } from 'gpt-tokenizer';
 import type { IntermediateModel, Section, Table } from './model';
 
-export const countTokens = (text: string) => encode(text, { allowedSpecial: new Set() }).length;
+export const countTokens = (text: string) => encode(text, { allowedSpecial: new Set(), disallowedSpecial: new Set() }).length;
 const ORDER: Section[] = ['database', 'routes', 'types', 'rules'];
 export function tableLine(table: Table) {
   return `Table ${table.name} (${table.columns.map(c => {

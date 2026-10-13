@@ -105,6 +105,10 @@ export function extractTsSchemas(source: SourceFile): { tables: Table[]; warning
     const root = init.getText().split('.')[0];
     const isZod = zodBindings.has(root) && first.name === 'object' && v.isExported();
     if (!isDrizzle && !isZod) continue;
+    if (isZod && chain.slice(1).some(c => !['strict', 'strip', 'passthrough', 'describe', 'meta'].includes(c.name))) {
+      warnings.push(`Skipped composed Zod schema ${v.getName()}; only literal object shapes are supported.`);
+      continue;
+    }
     const obj = first.args[isDrizzle ? 1 : 0];
     const name = isDrizzle ? literal(first.args[0]) : v.getName();
     if (!obj || !Node.isObjectLiteralExpression(obj) || !name) { warnings.push(`Skipped dynamic schema ${v.getName()}; a literal object is required.`); continue; }
@@ -115,11 +119,15 @@ export function extractTsSchemas(source: SourceFile): { tables: Table[]; warning
       const fieldChain = calls(value);
       const base = fieldChain[0];
       if (!base) { warnings.push(`Skipped unresolved field ${name}.${p.getName()}.`); continue; }
+      if (isZod && fieldChain.some(c => ['transform', 'pipe', 'preprocess', 'catch', 'brand'].includes(c.name))) {
+        warnings.push(`Skipped transformed Zod field ${name}.${p.getName()}; its output type cannot be determined statically.`);
+        continue;
+      }
       const constraints: string[] = [];
       if (fieldChain.some(c => c.name === 'primaryKey')) constraints.push('PK');
       if (fieldChain.some(c => c.name === 'notNull') || (isZod && !fieldChain.some(c => ['optional', 'nullable', 'nullish'].includes(c.name)))) constraints.push('NOT NULL');
       if (fieldChain.some(c => c.name === 'unique')) constraints.push('UNIQUE');
-      const column: Column = { name: isDrizzle ? literal(base.args[0]) ?? p.getName() : p.getName(), type: isZod ? zodType(value) : builderNames.get(base.name) ?? base.name, constraints };
+      const column: Column = { name: isDrizzle ? literal(base.args[0]) ?? p.getName() : p.getName(), type: isZod ? zodType(value) : (builderNames.get(base.name) ?? base.name) + (fieldChain.some(c => c.name === 'array') ? '[]' : ''), constraints };
       table.columns.push(column);
       const ref = fieldChain.find(c => c.name === 'references')?.args[0];
       const access = ref && Node.isArrowFunction(ref) ? ref.getBody() : undefined;

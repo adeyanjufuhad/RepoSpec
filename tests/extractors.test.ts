@@ -34,4 +34,10 @@ describe('static extractors', () => {
     expect(types).toEqual([{ name: 'Order', signature: "interface Order { id : string ; label : 'two  spaces' }" }]);
   });
   it('rejects malformed TypeScript', () => expect(() => parseSource('bad.ts', 'export interface {')).toThrow());
+  it('reports composed and transformed Zod shapes instead of guessing them', () => {
+    const result = extractTsSchemas(parseSource('schema.ts', `import {z} from 'zod'; export const Partial = z.object({name:z.string()}).partial(); export const Changed = z.object({id:z.string(), value:z.string().transform(v => v.length)});`));
+    expect(result.tables).toHaveLength(1);
+    expect(result.tables[0].columns.map(c => c.name)).toEqual(['id']);
+    expect(result.warnings).toHaveLength(2);
+  });
 });

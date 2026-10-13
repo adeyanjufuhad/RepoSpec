@@ -39,6 +39,10 @@ it('protects unmanaged output and rejects traversal/source overwrites', async ()
   await expect(safePath(root, '.env')).rejects.toThrow('Unsafe');
   await writeFile(path.join(root, '.repospec.json'), JSON.stringify({ output: ['types.ts'] }));
   await expect(loadConfig(root)).rejects.toThrow('not source/config');
+  await writeFile(path.join(root, '.repospec.json'), JSON.stringify({ output: ['./.repospec/rules.md'] }));
+  await expect(loadConfig(root)).rejects.toThrow('not source/config');
+  await writeFile(path.join(root, '.repospec.json'), JSON.stringify({ include: ['../**/*.ts'] }));
+  await expect(loadConfig(root)).rejects.toThrow('inside the workspace');
   await writeFile(path.join(root, '.ai-context.md'), 'Keep my notes');
   const result = await new ScanEngine().scan(root, DEFAULT_CONFIG);
   await expect(syncOutputs(root, DEFAULT_CONFIG, result)).rejects.toThrow('unmanaged');

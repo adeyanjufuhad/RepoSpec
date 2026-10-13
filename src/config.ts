@@ -27,7 +27,7 @@ export function inside(root: string, target: string) {
 export async function safePath(root: string, relative: string): Promise<string> {
   if (path.isAbsolute(relative) || isSecret(relative)) throw new Error(`Unsafe workspace path: ${relative}`);
   const target = path.resolve(root, relative);
-  if (!inside(root, target) || target === root || slash(relative).split('/').includes('.git')) throw new Error(`Unsafe workspace path: ${relative}`);
+  if (!inside(root, target) || target === root || slash(relative).split('/').some(s => s.toLowerCase() === '.git')) throw new Error(`Unsafe workspace path: ${relative}`);
   const canonicalRoot = await realpath(root);
   let current = target;
   while (current !== path.dirname(current)) {
@@ -61,6 +61,17 @@ export async function detectWorkspace(start: string): Promise<string> {
     dir = path.dirname(dir);
   }
 }
+export async function validateConfigPaths(root: string, config: Config) {
+  for (const pattern of [...config.include, ...config.exclude]) {
+    if (path.isAbsolute(pattern) || slash(pattern).split('/').includes('..')) throw new Error(`Glob patterns must stay inside the workspace: ${pattern}`);
+  }
+  for (const output of config.output) {
+    const target = await safePath(root, output);
+    const normalized = slash(path.relative(root, target)).toLowerCase();
+    if (/\.(ts|tsx|mts|cts|js|jsx|mjs|cjs|json|prisma)$/i.test(normalized) || target.toLowerCase() === path.resolve(root, config.rulesFile).toLowerCase() || normalized.startsWith('.repospec/')) throw new Error(`Output must be a context document, not source/config: ${output}`);
+  }
+  await safePath(root, config.rulesFile);
+}
 export async function loadConfig(cwd: string, configPath?: string, budget?: number) {
   const root = await realpath(path.resolve(cwd));
   let raw: unknown;
@@ -74,11 +85,7 @@ export async function loadConfig(cwd: string, configPath?: string, budget?: numb
   }
   const config = configSchema.parse(raw ?? {});
   if (budget !== undefined) config.tokenBudget = configSchema.shape.tokenBudget.parse(budget);
-  for (const output of config.output) {
-    await safePath(root, output);
-    if (/\.(ts|tsx|js|jsx|json|prisma)$/i.test(output) || output === config.rulesFile || output.startsWith('.repospec/')) throw new Error(`Output must be a context document, not source/config: ${output}`);
-  }
-  await safePath(root, config.rulesFile);
+  await validateConfigPaths(root, config);
   return { root, config, configFile, notice };
 }
 
