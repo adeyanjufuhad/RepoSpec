@@ -1,6 +1,6 @@
 import 'server-only';
 import { cookies } from 'next/headers';
-import { openSession, sealSession } from '../../src/session';
+import { assertSameOrigin, openSession, sealSession } from '../../src/session';
 
 export interface UserSession { token: string; login: string; id: number; expires: number }
 export const sessionCookie = 'repospec_session';
@@ -21,7 +21,5 @@ export async function setUserSession(session: UserSession) {
   jar.set(sessionCookie, sealSession(session, process.env.SESSION_SECRET!), cookieOptions(Math.floor((session.expires - Date.now()) / 1000)));
 }
 export function requireSameOrigin(request: Request) {
-  const origin = request.headers.get('origin');
-  const expected = process.env.APP_URL ? appUrl() : new URL(request.url).origin;
-  if (!origin || origin !== expected) throw new Error('Open RepoSpec in this browser and try again. Cross-site requests are not allowed.');
+  assertSameOrigin(request);
 }

@@ -4,7 +4,7 @@ import { gzipSync } from 'node:zlib';
 import tar from 'tar-stream';
 import { archiveRedirect, parseGitHubRepo, readArchive, sourcePath } from '../src/github';
 import { compileSnapshot, extractSnapshot, snapshotSchema } from '../src/snapshot';
-import { openSession, sameSecret, sealSession } from '../src/session';
+import { assertSameOrigin, openSession, sameSecret, sealSession } from '../src/session';
 
 it('accepts GitHub repo identifiers and rejects arbitrary URLs and traversal', () => {
   expect(parseGitHubRepo('https://github.com/owner/project.git')).toEqual({ owner: 'owner', repo: 'project', fullName: 'owner/project' });
@@ -47,4 +47,9 @@ it('seals credentials, rejects tampering and expires sessions', () => {
   expect(openSession(sealed, 'a-different-secret-of-thirty-two-characters')).toBeNull();
   expect(openSession(sealSession({ expires: Date.now() - 1 }, secret), secret)).toBeNull();
   expect(sameSecret('state-a', 'state-b')).toBe(false);
+});
+it('checks the browser origin against the actual Host instead of an internal proxy URL', () => {
+  expect(() => assertSameOrigin(new Request('http://localhost:3000/api/context', { headers: { host: '127.0.0.1:3000', origin: 'http://127.0.0.1:3000' } }))).not.toThrow();
+  expect(() => assertSameOrigin(new Request('http://localhost:3000/api/context', { headers: { host: 'example.vercel.app', origin: 'https://example.vercel.app' } }))).not.toThrow();
+  for (const origin of ['https://evil.test', 'null', 'https://example.vercel.app.evil.test', 'https://example.vercel.app/path']) expect(() => assertSameOrigin(new Request('https://example.vercel.app/api/context', { headers: { host: 'example.vercel.app', origin } }))).toThrow();
 });

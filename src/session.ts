@@ -19,3 +19,10 @@ export function sameSecret(left: string, right: string) {
   const a = Buffer.from(left), b = Buffer.from(right);
   return a.length === b.length && timingSafeEqual(a, b);
 }
+export function assertSameOrigin(request: Request) {
+  const origin = request.headers.get('origin');
+  const host = request.headers.get('host') ?? new URL(request.url).host;
+  let parsed: URL;
+  try { parsed = new URL(origin ?? ''); } catch { throw new Error('Cross-site requests are not allowed.'); }
+  if (!['https:', 'http:'].includes(parsed.protocol) || parsed.origin !== origin || parsed.host.toLowerCase() !== host.toLowerCase()) throw new Error('Cross-site requests are not allowed.');
+}
