@@ -26,15 +26,17 @@
     "ui"
   ],
   "scripts": {
-    "build": "tsup src/cli.ts src/index.ts --format esm --dts --clean",
+    "build": "npm run build --workspace ui",
+    "build:cli": "tsup src/cli.ts src/index.ts --format esm --dts --clean",
     "dev": "npm run dev --workspace ui",
     "build:ui": "npm run build --workspace ui",
     "start": "npm run start --workspace ui",
     "typecheck": "tsc --noEmit && npm run typecheck --workspace ui",
-    "pretest": "npm run build",
+    "pretest": "npm run build:cli",
     "test": "vitest run",
     "test:watch": "vitest",
-    "prepack": "npm run build"
+    "test:package": "npm run build:cli && node scripts/package-smoke.mjs",
+    "prepack": "npm run build:cli"
   },
   "repository": {
     "type": "git",
