@@ -1,6 +1,6 @@
 'use client';
-import type { DashboardData } from '@/lib/server';
-type File = DashboardData['files'][number];
+import type { ContextResult } from '../../src/snapshot';
+type File = ContextResult['files'][number];
 type Rect<T> = { item: T; x: number; y: number; width: number; height: number };
 const colors = ['#023e8a', '#0077b6', '#0096c7', '#00b4d8', '#48cae4', '#90e0ef', '#ade8f4', '#caf0f8'];
 /** Binary partition: rectangle area is proportional to token weight. */

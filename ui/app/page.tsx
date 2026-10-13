@@ -1,7 +1,40 @@
-import { Suspense } from 'react';
-import Dashboard from '@/components/dashboard';
-import { sessionToken } from '@/lib/server';
-export const dynamic = 'force-dynamic';
-export default function Page() {
-  return <Suspense fallback={<div className="p-10">Loading workspace…</div>}><Dashboard token={sessionToken()} /></Suspense>;
+import type { Metadata } from 'next';
+import { ArrowRightIcon, GitHubLogoIcon, CheckIcon, CodeIcon, LockClosedIcon, DownloadIcon, LayersIcon } from '@radix-ui/react-icons';
+import Brand from '@/components/brand';
+import { FluidScene, Reveal, LandingMotion, MotionControl, ScrollProgress, StackMarquee } from '@/components/landing-motion';
+import LandingDemo from '@/components/landing-demo';
+import { PipelineStory, ExportStory, UseCases } from '@/components/landing-story';
+import { demoSnapshot } from '@/lib/demo';
+import { compileSnapshot } from '../../src/snapshot';
+export const metadata: Metadata = { title: 'RepoSpec — Give your AI the right context', description: 'Turn your GitHub repository into focused, token-budgeted context for your AI coding assistant. Schemas, routes, and types, grounded in your actual code.' };
+const faqs = [
+  ['What does RepoSpec actually do?', 'RepoSpec extracts database models, API endpoints, and exported TypeScript types from a GitHub repository. You choose what to include and download a compact context file for your coding assistant.'],
+  ['Can I use a private repository?', 'Yes, through GitHub sign-in and a GitHub App installation. You select which repositories the app can read. Private access requires the site operator to configure the GitHub App.'],
+  ['Does it write anything to my GitHub repository?', 'No. Repository access is read-only. Generated files download to your device, and you decide whether to add them to your project.'],
+  ['Which stacks does it understand?', 'The first version supports TypeScript, Next.js App Router, Prisma, Drizzle, and common Zod object schemas. Unsupported patterns are reported rather than guessed.'],
+  ['Will this stop every AI mistake?', 'No tool can guarantee that. RepoSpec gives an assistant explicit contracts from a specific commit, helping it reason with better context. You still review and test generated code.'],
+  ['What happens to my source code?', 'The hosted app parses a bounded snapshot in server memory and returns extracted contracts. It does not run your source code or save the repository in an application database.'],
+];
+export default function HomePage() {
+  const demo = compileSnapshot(demoSnapshot, { budget: 2500, disabledFiles: [], disabledSections: [] });
+  return <LandingMotion>
+    <header className="landing-header"><ScrollProgress/><div className="landing-nav"><Brand/><nav className="landing-links" aria-label="Main navigation"><a href="#how-it-works">How it works</a><a href="#playground">The playground</a><a href="#questions">FAQs</a></nav><div className="landing-nav-actions"><MotionControl/><a href="/app" className="landing-nav-cta">Open workspace<ArrowRightIcon aria-hidden="true"/></a></div></div></header>
+    <main id="main">
+      <section className="landing-hero landing-container"><div className="hero-copy"><Reveal><div className="eyebrow"><span/>A LITTLE CONTEXT GOES A LONG WAY</div><h1>Your code.<br/>Your context.<br/><span>Less guesswork.</span></h1><p className="hero-description">Give your AI assistant a clear picture of your codebase. Turn a GitHub repo into focused context—schemas, routes, and types included.</p><div className="hero-actions"><a href="/app" className="landing-primary"><GitHubLogoIcon aria-hidden="true"/>Analyze a GitHub repo<ArrowRightIcon aria-hidden="true"/></a><a href="#playground" className="landing-text-link">Take it for a spin<span>↘</span></a></div><div className="hero-footnote"><CheckIcon aria-hidden="true"/>Public repos without sign-in<span/>Private repos through GitHub</div></Reveal></div><FluidScene tokens={demo.tokens}/><div className="hero-bottom-label"><span>FROM REPOSITORY TO REFERENCE</span><span>SCROLL TO EXPLORE ↓</span></div></section>
+      <StackMarquee/>
+      <section className="problem-section landing-container" id="why-repospec"><Reveal className="problem-copy"><div className="eyebrow">THE CONTEXT GAP</div><h2>Your code moved on.<br/>Did your AI?</h2><p>A new schema. A renamed endpoint. One more type to remember. Your assistant can’t follow the rules it doesn’t know.</p><p>RepoSpec turns the contracts that matter into a reference you can actually keep current.</p><a href="#how-it-works" className="landing-text-link">Bring it back to the source<ArrowRightIcon aria-hidden="true"/></a></Reveal><Reveal className="context-contrast"><div className="contrast-label">A SIMPLE EXAMPLE</div><div className="contrast-row contrast-before"><span>WITHOUT THE CONTRACT</span><code>project.owner<span className="code-question">?</span></code><p>A field that looks right.<br/>But doesn’t exist in the model.</p></div><div className="contrast-arrow"><ArrowRightIcon aria-hidden="true"/></div><div className="contrast-row contrast-after"><span>GROUNDED IN YOUR SCHEMA</span><code>project.ownerId<CheckIcon aria-hidden="true"/></code><p>The field your code<br/>actually defines.</p></div></Reveal></section>
+      <PipelineStory/>
+      <section className="playground-section" id="playground"><div className="landing-container"><Reveal><div className="section-intro"><div><div className="eyebrow">LESS, BUT MORE USEFUL</div><h2>Context with<br/>a sense of proportion.</h2></div><p>Keep the schema. Trim the noise.<br/>Spend your context window on the<br/>parts that help your assistant think.</p></div><LandingDemo snapshot={demoSnapshot} initial={demo}/></Reveal></div></section>
+      <section className="workflow-section landing-container" id="how-it-works"><Reveal><div className="eyebrow">FROM CODEBASE TO CLARITY</div><h2>Three steps.<br/>A better starting point.</h2></Reveal><div className="workflow-steps">{[
+        { number: '01', title: 'Start with your repository.', text: 'Paste a public GitHub URL, or sign in and choose a repository your GitHub App can access.', icon: GitHubLogoIcon, tag: 'READ-ONLY ACCESS' },
+        { number: '02', title: 'Make the context yours.', text: 'Inspect extracted contracts, toggle source files, and set a token budget. See exactly what makes the cut.', icon: LayersIcon, tag: 'YOU SET THE PRIORITIES' },
+        { number: '03', title: 'Put it to work.', text: 'Download your context file and add it to your coding workflow. Reanalyze when your code changes.', icon: DownloadIcon, tag: 'YOUR CONTEXT, PORTABLE' },
+      ].map(({ number, title, text, icon: Icon, tag }) => <Reveal className="workflow-step" key={number}><span className="workflow-number">{number}</span><div><Icon aria-hidden="true"/><h3>{title}</h3><p>{text}</p></div><span className="workflow-tag">{tag}</span></Reveal>)}</div></section>
+      <ExportStory markdown={demo.markdown}/>
+      <UseCases/>
+      <section className="principles-section"><div className="landing-container principles-grid"><Reveal><div className="eyebrow">A CLEARER CONTRACT</div><h2>Know what goes in.<br/>Trust what comes out.</h2><p>Useful context should be inspectable, traceable, and yours to control.</p></Reveal><div className="principle-list"><Reveal><LockClosedIcon aria-hidden="true"/><div><h3>Selected repos. Read-only.</h3><p>Choose which repositories the GitHub App can access. RepoSpec doesn’t push commits or change your code.</p></div></Reveal><Reveal><CodeIcon aria-hidden="true"/><div><h3>Extracted, not invented.</h3><p>Static parsing reads what your code defines. Unsupported patterns show up as notes, instead of confident guesses.</p></div></Reveal><Reveal><DownloadIcon aria-hidden="true"/><div><h3>No setup in your codebase.</h3><p>Analyze in the browser and download Markdown. No repository plugin, database, or package installation required.</p></div></Reveal></div></div></section>
+      <section className="faq-section landing-container" id="questions"><Reveal><div className="eyebrow">GOOD QUESTIONS</div><h2>A little more context.</h2></Reveal><div className="faq-list">{faqs.map(([question, answer]) => <details key={question}><summary>{question}<span aria-hidden="true">+</span></summary><p>{answer}</p></details>)}</div></section>
+      <section className="closing-section"><div className="closing-grid" aria-hidden="true"/><Reveal className="landing-container closing-content"><div className="eyebrow">LET THE CODE DO THE TALKING</div><h2>Give your next prompt<br/>a better foundation.</h2><a href="/app" className="landing-primary"><GitHubLogoIcon aria-hidden="true"/>Start with a GitHub repo<ArrowRightIcon aria-hidden="true"/></a><p>Your source. Your priorities. Your context.</p></Reveal></section>
+    </main><footer className="landing-footer landing-container"><Brand/><p>Good code deserves good context.</p><nav aria-label="Footer"><a href="/docs">Documentation</a><a href="/privacy">Data & privacy</a><a href="/app">Open workspace<ArrowRightIcon aria-hidden="true"/></a></nav><span>© {new Date().getFullYear()} RepoSpec</span></footer>
+  </LandingMotion>;
 }

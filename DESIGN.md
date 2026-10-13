@@ -21,3 +21,35 @@ inline errors, loading skeletons, and useful empty states. Navigation and filter
 must survive refresh in the URL. Honor reduced motion and browser zoom.
 Vercel's motion accessibility and functional requirements take precedence over
 Taste Skill's decorative perpetual motion. Never invent success, scans, or data.
+
+## Public landing page
+
+The user requested fluid motion and Pinterest research. References discovered:
+- https://in.pinterest.com/pin/371828513004018876/
+- https://dribbble.com/shots/19623630-SaaS-Landing-Page-for-Developers-Tool
+- https://it.pinterest.com/pin/64317100925143805/
+Pinterest presented a login wall during visual inspection. Use the references as
+direction, not as a claim that all details were inspected or as assets to copy.
+
+Compose a light editorial split hero with deep navy type, oversized geometric
+repository-to-context visual, fine blueprint grid, cyan accents, and a dark navy
+interactive demonstration. Use asymmetric sections, generous space, and an
+immersive closing CTA. Spring-based hover and scroll-linked transforms should
+feel fluid. All automatic motion can be paused and honors reduced motion.
+Do not invent testimonials, adoption counts, integrations, or performance claims.
+
+## Expanded landing motion
+
+21st.dev visual research: https://21st.dev/@cult-ui/components/grid-beam
+and https://21st.dev/@uilayout.contact/components/text-marque. The Grid Beam
+implementation was locked during inspection; no gated code was copied. The
+blue beam grid, stack marquee, extraction walkthrough, and export selector are
+original implementations inspired by these motion patterns, using the existing
+Framer Motion dependency. Do not claim they are installed third-party components.
+
+One page-wide control pauses automatic motion. The walkthrough also pauses
+after manual selection and while outside the viewport. Device reduced-motion
+preferences disable automatic cycling and decorative movement. Walkthrough
+content is explicitly illustrative; the playground and downloadable example
+use the actual parser against a labeled fixture. Do not confuse export filenames
+with automatic integrations or promise that a snapshot stays up to date.
