@@ -72,6 +72,18 @@ button:disabled { cursor: wait; opacity: .6; }
 .landing-nav-cta { display: flex; gap: 18px; align-items: center; border: 1px solid #d7e5ee; border-radius: 7px; padding: 12px 18px; font-size: 12px; font-weight: 550; color: #023e8a; transition: background-color .2s; }
 .landing-nav-cta:hover { background: #edf7fb; }
 .landing-hero { min-height: 700px; display: grid; grid-template-columns: 1.08fr 1fr; align-items: center; position: relative; gap: 12px; padding-block: 65px 110px; }
+.landing-hero-backdrop { position: relative; isolation: isolate; }
+.landing-hero-backdrop .landing-hero { z-index: 1; }
+.react-bits-background { position: absolute; inset: 0; overflow: hidden; pointer-events: none; z-index: 0; }
+.react-bits-background-hero { mask-image: linear-gradient(90deg, #0003, #0005 30%, #000 62%, #000 94%, transparent); }
+.react-bits-background-closing { mask-image: linear-gradient(90deg, #000, #0003 32%, #0003 68%, #000); }
+.background-wave-fallback { position: absolute; inset: 0; width: 100%; height: 100%; opacity: .3; }
+.react-bits-background:has(canvas[data-waves-renderer="webgl2"]) .background-wave-fallback { display: none; }
+.closing-content { position: relative; z-index: 1; }
+.landing-hero-backdrop .scene-grid { opacity: .3; }
+@media (max-width: 767px) {
+  .react-bits-background-hero { mask-image: linear-gradient(180deg, transparent, #0002 32%, #000 65%, transparent); }
+}
 .eyebrow { display: flex; align-items: center; gap: 9px; color: #0077b6; font-family: var(--font-geist-mono), monospace; font-size: 10px; letter-spacing: .12em; font-weight: 500; }
 .eyebrow > span { width: 5px; height: 5px; background: #0096c7; border-radius: 50%; }
 .hero-copy { z-index: 1; }
@@ -322,7 +334,6 @@ button:disabled { cursor: wait; opacity: .6; }
 .faq-list details[open] summary > span { transform: rotate(45deg); }
 .faq-list details p { font-size: 13px; line-height: 1.9; color: #63788a; padding-bottom: 24px; max-width: 460px; }
 .closing-section { background: #edf9fc; position: relative; overflow: hidden; padding-block: 90px; }
-.closing-grid { position: absolute; inset: 0; background: repeating-linear-gradient(90deg, transparent, transparent 79px, #0077b60b 80px); mask-image: linear-gradient(90deg, transparent, #000); }
 .closing-content { position: relative; }
 .closing-content h2 { font-size: clamp(38px, 5vw, 66px); }
 .closing-content .landing-primary { margin-top: 14px; }

@@ -571,4 +571,6 @@ Keep changes focused, run relevant verification, and describe behavioral changes
 
 Further documentation: [hosted architecture](docs/HOSTED-ARCHITECTURE.md), [implementation map](docs/IMPLEMENTATION.md), [validation notes](docs/VALIDATION.md), and [design system](DESIGN.md). The implementation map and earlier validation notes describe the original local milestone; this README and the hosted architecture document describe the expanded GitHub web product.
 
-MIT. See [LICENSE](LICENSE).
+RepoSpec is MIT licensed. See [LICENSE](LICENSE). The vendored React Bits Waves
+background has its own MIT + Commons Clause license; see
+[third-party notices](THIRD_PARTY_NOTICES.md).

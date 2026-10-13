@@ -61,3 +61,14 @@ inspired by the user's R reference. Preserve visible negative space between the
 upper bowl and the right stroke at small sizes. Use the shared BrandMark in the
 public site and local dashboard, and the matching App Router SVG favicon.
 Source: ui/public/brand/repospec-mark.svg. No reference watermark or image is embedded.
+
+## React Bits background
+
+Use the actual Waves component from https://reactbits.dev/backgrounds/waves,
+vendored at the pinned revision recorded in THIRD_PARTY_NOTICES.md. Its flowing
+line field reinforces the repository-to-context flow. Use restrained blue lines
+behind the hero and closing CTA, with masks keeping copy readable. Keep the
+existing page-wide pause and device reduced-motion controls connected to Waves.
+The source suspends animation off-screen or while the document is hidden. Cap
+pixel ratio at 1.25, use generous line spacing, and retain a static SVG fallback
+for browsers without WebGL2. No additional animation dependency is required.
