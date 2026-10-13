@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.next/
+coverage/
+*.tsbuildinfo
+.env*
+!.env.example
+.repospec/cache/
+.repospec/state.json
+.repospec/session
+test-results/
+playwright-report/
+*.tgz
+.ai-context.md
+.cursorrules
+*.log
