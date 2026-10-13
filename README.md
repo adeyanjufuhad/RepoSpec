@@ -1,4 +1,4 @@
-<p align="center"><img src="ui/public/brand/repospec-mark.svg" width="76" alt="RepoSpec R monogram" /></p>
+<p align="center"><img src="ui/app/icon.svg" width="76" alt="RepoSpec R monogram" /></p>
 
 # RepoSpec
 
@@ -8,7 +8,7 @@ RepoSpec is a Next.js web application that turns a GitHub repository into compac
 
 Instead of pasting implementation files into every conversation, give your assistant the structure it needs to reason about your project. RepoSpec uses static parsing, not an AI model, to extract supported contracts. It does not guarantee correct AI output: review and test the changes your assistant proposes.
 
-[Getting started](#getting-started) · [Architecture](#system-architecture) · [GitHub access](#github-app-setup) · [Deployment](#deploying-to-vercel) · [CLI](#companion-cli) · [Limitations](#limitations-and-production-considerations)
+[Website](https://repospec.vercel.app) · [Getting started](#getting-started) · [Architecture](#system-architecture) · [GitHub access](#github-app-setup) · [Deployment](#deploying-to-vercel) · [CLI](#companion-cli) · [Limitations](#limitations-and-production-considerations)
 
 ## Contents
 
