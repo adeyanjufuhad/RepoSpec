@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { ArrowLeftIcon, ArrowRightIcon, CheckIcon, CodeIcon, CopyIcon, CubeIcon, DownloadIcon, FileTextIcon, GitHubLogoIcon, LockClosedIcon, MagnifyingGlassIcon, ReloadIcon, Cross2Icon, ExternalLinkIcon } from '@radix-ui/react-icons';
 import Brand from './brand';
+import { readJson } from '../lib/http';
 import Treemap from './treemap';
 import type { ContextOptions, ContextResult, Snapshot } from '../../src/snapshot';
 import type { Section } from '../../src/model';
@@ -27,7 +28,7 @@ export default function GitHubWorkspace() {
   useEffect(() => { void fetch('/api/auth/session').then(r => r.json()).then(setSession).catch(() => setError('Account status could not load. Refresh this page to retry.')); }, []);
   async function loadRepositories() {
     setReposBusy(true); setError('');
-    try { const response = await fetch('/api/github/repositories'); const data = await response.json(); if (!response.ok) throw new Error(data.error); setRepos(data.repositories); setReposMore(data.more); }
+    try { const data = await readJson(await fetch('/api/github/repositories')); setRepos(data.repositories); setReposMore(data.more); }
     catch (e) { setError((e as Error).message); } finally { setReposBusy(false); }
   }
   useEffect(() => { if (session?.user) void loadRepositories(); }, [session?.user?.login]);
@@ -36,7 +37,7 @@ export default function GitHubWorkspace() {
     const abort = new AbortController();
     const timer = setTimeout(async () => {
       setCompacting(true); setDownloaded(false);
-      try { const response = await fetch('/api/context', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ snapshot: analysis.snapshot, options }), signal: abort.signal }); const data = await response.json(); if (!response.ok) throw new Error(data.error); setResult(data); setError(''); }
+      try { const response = await fetch('/api/context', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ snapshot: analysis.snapshot, options }), signal: abort.signal }); const data = await readJson<ContextResult>(response); setResult(data); setError(''); }
       catch (e) { if (!abort.signal.aborted) setError((e as Error).message); }
       finally { if (!abort.signal.aborted) setCompacting(false); }
     }, 250);
@@ -48,7 +49,7 @@ export default function GitHubWorkspace() {
     setBusy(true); setError(''); setNotice(''); setAnalysis(null); setResult(null); setDownloaded(false);
     try {
       const response = await fetch('/api/github/analyze', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ repository, ...(ref.trim() ? { ref: ref.trim() } : {}) }), signal: abort.signal });
-      const data = await response.json(); if (!response.ok) throw new Error(data.error);
+      const data = await readJson<Analysis>(response);
       setOptions(defaults); setAnalysis(data); setResult(data.result);
     } catch (e) { if (!abort.signal.aborted) setError((e as Error).message); }
     finally { if (!abort.signal.aborted) setBusy(false); }

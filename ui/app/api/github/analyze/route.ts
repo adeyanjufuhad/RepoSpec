@@ -2,14 +2,20 @@ import { z } from 'zod';
 import { requireSameOrigin, userSession } from '@/lib/auth';
 import { boundedJson, enterAnalysis } from '@/lib/hosted';
 import { fetchGitHubSnapshot, GitHubError } from '../../../../../src/github';
-import { compileSnapshot, contextOptionsSchema, extractSnapshot } from '../../../../../src/snapshot';
 export const runtime = 'nodejs';
 export const maxDuration = 60;
+async function loadEngine() {
+  try { return await import('../../../../../src/snapshot'); }
+  catch (error) { console.error('RepoSpec extraction engine failed to load', error); return null; }
+}
 const schema = z.object({ repository: z.string().min(1).max(300), ref: z.string().max(200).optional() });
 export async function POST(request: Request) {
   try { requireSameOrigin(request); } catch { return Response.json({ error: 'Cross-site request rejected.' }, { status: 403 }); }
   let release: (() => void) | undefined;
   try {
+    const engine = await loadEngine();
+    if (!engine) return Response.json({ error: 'The analysis engine could not start. Try again shortly.' }, { status: 503 });
+    const { compileSnapshot, contextOptionsSchema, extractSnapshot } = engine;
     const { repository, ref } = schema.parse(await boundedJson(request, 4096));
     release = enterAnalysis(request);
     const session = await userSession();
